@@ -61,10 +61,17 @@ public class LoginActivity extends AppCompatActivity {
     private View mProgressView;
     private View mLoginFormView;
 
+    // Session Management Variables
+    SessionManager session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Session Manager
+        session = new SessionManager(getApplicationContext());
+
         // Set up the login form.
         mUsernameView = (EditText) findViewById(R.id.username);
 
@@ -79,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // Perform validation here again to prevent submission of invalid fields
                 if (checkValidation()) {
-                    Toast.makeText(LoginActivity.this, "Attempting to login", LENGTH_LONG).show();
+                    //Toast.makeText(LoginActivity.this, "Attempting to login", LENGTH_LONG).show();
                     attemptLogin();
                 }
 
@@ -102,8 +109,8 @@ public class LoginActivity extends AppCompatActivity {
         // Display message while submission
         // Toast.makeText(this, "Submitting form...", Toast.LENGTH_LONG).show();
 
-        String username = mUsernameView.getText().toString().trim();
-        String password = mPasswordView.getText().toString().trim();
+        final String username = mUsernameView.getText().toString().trim();
+        final String password = mPasswordView.getText().toString().trim();
         String url = String.format("http://10.192.44.89:8000/default/login.json?userid=%s&password=%s",username,password);
 
 
@@ -133,7 +140,14 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             pDialog.hide();
                             String str = response.getString("success") ;
-                            Toast.makeText(getApplicationContext(), str, LENGTH_LONG).show();
+                            if(str.equals("true")){
+                                session.createLoginSession(username,password);
+                                Toast.makeText(getApplicationContext(), "Login Successful.", LENGTH_LONG).show();
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(), "Invalid username or password", LENGTH_LONG).show();
+                            }
+
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -145,7 +159,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         VolleyLog.d(TAG, "Error: " + error.getMessage());
                         //pDialog.setMessage(error.getMessage());
-                        Toast.makeText(getApplicationContext(),"Unable to connect to internet", LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(),"Login failed.", LENGTH_LONG).show();
                         //pDialog.setMessage(error.getCause().toString());
                         pDialog.hide();
 
