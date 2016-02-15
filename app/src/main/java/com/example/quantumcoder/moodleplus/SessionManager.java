@@ -9,13 +9,13 @@ import android.content.SharedPreferences.Editor;
 
 public class SessionManager {
     // Shared Preferences
-    SharedPreferences pref;
+    static SharedPreferences pref;
 
     // Editor for Shared preferences
-    Editor editor;
+    static Editor editor;
 
     // Context
-    Context _context;
+    static Context _context;
 
     // Shared pref mode
     int PRIVATE_MODE = 0;
@@ -27,10 +27,10 @@ public class SessionManager {
     private static final String IS_LOGIN = "IsLoggedIn";
 
     // User name (make variable private to prevent access from outside)
-    private static final String KEY_NAME = "name";
+    public static final String KEY_NAME = "username";
 
     // Password (make variable private to prevent access from outside)
-    private static final String KEY_PASSWORD = "password";
+    public static final String KEY_PASSWORD = "password";
 
     // Constructor
     public SessionManager(Context context){
@@ -39,18 +39,10 @@ public class SessionManager {
         editor = pref.edit();
     }
 
-    public String getKeyName(){
-        return KEY_NAME;
-    }
-
-    public String getKeyPassword(){
-        return KEY_PASSWORD;
-    }
-
     /**
      * Create login session
      * */
-    public void createLoginSession(String name, String password){
+    public static void createLoginSession(String name, String password){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
@@ -69,9 +61,9 @@ public class SessionManager {
      * If false it will redirect user to login page
      * Else won't do anything
      * */
-    public void checkLogin(){
+    public static void checkLogin(){
         // Check login status
-        if(!this.isLoggedIn()){
+        if(!isLoggedIn()){
             // user is not logged in redirect him to Login Activity
             Intent i = new Intent(_context, LoginActivity.class);
             // Closing all the Activities
@@ -91,7 +83,7 @@ public class SessionManager {
     /**
      * Get stored session data
      * */
-    public HashMap<String, String> getUserDetails(){
+    public static HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
         // user name
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
@@ -106,7 +98,7 @@ public class SessionManager {
     /**
      * Clear session details
      * */
-    public void logoutUser(){
+    public static void logoutUser(){
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
@@ -127,7 +119,7 @@ public class SessionManager {
      * Quick check for login
      * **/
     // Get Login State
-    public boolean isLoggedIn(){
+    public static boolean isLoggedIn(){
         return pref.getBoolean(IS_LOGIN, false);
     }
 }

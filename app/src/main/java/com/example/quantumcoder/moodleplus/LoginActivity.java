@@ -3,6 +3,7 @@ package com.example.quantumcoder.moodleplus;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
@@ -61,8 +62,6 @@ public class LoginActivity extends AppCompatActivity {
     private View mProgressView;
     private View mLoginFormView;
 
-    // Session Management Variables
-    SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         // Session Manager
-        session = new SessionManager(getApplicationContext());
+        new SessionManager(getApplicationContext());
 
         // Set up the login form.
         mUsernameView = (EditText) findViewById(R.id.username);
@@ -141,8 +140,12 @@ public class LoginActivity extends AppCompatActivity {
                             pDialog.hide();
                             String str = response.getString("success") ;
                             if(str.equals("true")){
-                                session.createLoginSession(username,password);
-                                Toast.makeText(getApplicationContext(), "Login Successful.", LENGTH_LONG).show();
+                                SessionManager.createLoginSession(username, password);
+                                Toast.makeText(getApplicationContext(), "Login Successful.", LENGTH_SHORT).show();
+                                // Starting MainActivity
+                                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                                startActivity(i);
+                                finish();
                             }
                             else {
                                 Toast.makeText(getApplicationContext(), "Invalid username or password", LENGTH_LONG).show();

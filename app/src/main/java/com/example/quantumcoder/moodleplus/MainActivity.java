@@ -6,6 +6,11 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
+
+import java.util.HashMap;
+
+import static android.widget.Toast.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -24,6 +30,15 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        if(SessionManager.isLoggedIn()){
+            HashMap<String,String> userdata = SessionManager.getUserDetails();
+            String username = userdata.get(SessionManager.KEY_NAME);
+            String password = userdata.get(SessionManager.KEY_PASSWORD);
+
+            Toast.makeText(getApplicationContext(), "Session created", LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), username + "\n" + password , LENGTH_LONG).show();
+        }
     }
 
 }
