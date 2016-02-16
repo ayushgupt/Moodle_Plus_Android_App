@@ -13,6 +13,7 @@ import com.android.volley.toolbox.HttpStack;
 import org.apache.http.client.CookieStore;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SessionManager {
@@ -42,9 +43,9 @@ public class SessionManager {
 
     static HttpStack httpStack;
 
-    // Variables to store user data
-    JSONObject userdata;
-    JSONObject coursedata;
+    // Keys to store user data
+    public static final String KEY_USERDATA = "userdata";
+    public static final String KEY_COURSEDATA = "coursedata";
 
 
     // Constructor
@@ -67,10 +68,10 @@ public class SessionManager {
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
-        // Storing name in pref
+
         editor.putString(KEY_NAME, name);
 
-        // Storing email in pref
+        
         editor.putString(KEY_PASSWORD, password);
 
         // commit changes
@@ -104,7 +105,7 @@ public class SessionManager {
     /**
      * Get stored session data
      * */
-    public static HashMap<String, String> getUserDetails(){
+    public static HashMap<String, String> getLoginDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
         // user name
         user.put(KEY_NAME, pref.getString(KEY_NAME, null));
@@ -143,4 +144,42 @@ public class SessionManager {
     public static boolean isLoggedIn(){
         return pref.getBoolean(IS_LOGIN, false);
     }
+
+
+    // Manage cookie variables
+    public static void setUserData(JSONObject userdata){
+        editor.putString(KEY_USERDATA, userdata.toString());
+        editor.commit();
+    }
+
+    public static JSONObject getUserData(){
+        String userdata = pref.getString(KEY_USERDATA,null);
+        try {
+            JSONObject userdata_json = new JSONObject(userdata);
+            return userdata_json;
+        } catch (JSONException e) {
+            //e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static void setCourseData(JSONObject coursedata){
+        editor.putString(KEY_COURSEDATA,coursedata.toString());
+        editor.commit();
+    }
+
+    public static JSONObject getCourseData(){
+        String coursedata = pref.getString(KEY_COURSEDATA,null);
+        try {
+            JSONObject coursedata_json = new JSONObject(coursedata);
+            return coursedata_json;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    // Methods to update cookie variables
+
 }

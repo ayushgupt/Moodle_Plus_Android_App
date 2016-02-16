@@ -57,11 +57,7 @@ import static com.android.volley.VolleyLog.TAG;
  * A login screen that offers login via username/password.
  */
 public class LoginActivity extends AppCompatActivity {
-
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
+    static final String ip = "192.168.133.1";
 
     // UI references.
     private EditText mUsernameView;
@@ -117,7 +113,7 @@ public class LoginActivity extends AppCompatActivity {
 
         final String username = mUsernameView.getText().toString().trim();
         final String password = mPasswordView.getText().toString().trim();
-        String url = String.format("http://10.192.44.89:8000/default/login.json?userid=%s&password=%s",username,password);
+        String url = String.format("http://"+LoginActivity.ip+"/default/login.json?userid=%s&password=%s",username,password);
 
 
         final ProgressDialog pDialog = new ProgressDialog(this);
@@ -151,9 +147,10 @@ public class LoginActivity extends AppCompatActivity {
                             pDialog.hide();
                             String str = response.getString("success") ;
                             if(str.equals("true")){
-                                SessionManager.createLoginSession(username, password);
-                                // Create cookies - implicitly passed to the httpUrlConnection
 
+                                // Create cookies - implicitly passed to the httpUrlConnection
+                                SessionManager.createLoginSession(username, password);
+                                SessionManager.setUserData((JSONObject) response.get("user"));
 
                                 Toast.makeText(getApplicationContext(), "Login Successful.", LENGTH_SHORT).show();
                                 // Starting MainActivity

@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if(SessionManager.isLoggedIn()){
+        if (SessionManager.isLoggedIn()) {
             /*
             HashMap<String,String> userdata = SessionManager.getUserDetails();
             String username = userdata.get(SessionManager.KEY_NAME);
@@ -64,71 +64,101 @@ public class MainActivity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), username + "\n" + password , LENGTH_LONG).show();
 
 
-            String url = "http://10.192.44.89:8000/courses/list.json";
+            String course_url = "http://"+LoginActivity.ip+"/courses/list.json";
 
             final ProgressDialog pDialog = new ProgressDialog(this);
             pDialog.setMessage("Loading...");
             pDialog.show();
 
-            RequestQueue requestQueue = Volley.newRequestQueue(this, SessionManager.httpStack);
+            final JSONObject[] courseobject = {null};
 
-            JsonObjectRequest loginRequest = new JsonObjectRequest
-                    (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            if (SessionManager.getCourseData() != null) {
+                courseobject[0] = SessionManager.getCourseData();
+            } else {
 
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            Log.d(TAG, response.toString());
-                            //pDialog.setMessage("Response: "+ response.toString());
-                            try {
+                RequestQueue requestQueue = Volley.newRequestQueue(this, SessionManager.httpStack);
+
+                JsonObjectRequest courseRequest = new JsonObjectRequest
+                        (Request.Method.GET, course_url, null, new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.d(TAG, response.toString());
+                                //pDialog.setMessage("Response: "+ response.toString());
                                 pDialog.hide();
-                                JSONArray courses = (JSONArray) response.get("courses");
-                                String coursename = ""; String coursecode = ""; int courseId;
-                                for(int i=0; i<courses.length();i++){
-                                    JSONObject course = courses.getJSONObject(i);
-                                    coursename = (String) course.get("name");
-                                    coursecode = (String) course.get("code");
-                                    courseId = (int) course.get("id");
-                                    final Button courseButton = new Button(getApplicationContext());
-                                    courseButton.setText(coursecode + ": " + coursename);
-                                    courseButton.setId(courseId);
-                                    courseButton.setGravity(Gravity.CENTER);
-                                    courseButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                                    courseButton.setOnClickListener(new OnClickListener(){
-                                        @Override
-                                        public void onClick(View v) {
-                                            Intent i = new Intent(getApplicationContext(), CoursePage.class);
-                                            startActivity(i);
-                                            finish();
-                                        }
-                                    });
-
-                                    LinearLayout ll = (LinearLayout)findViewById(R.id.courses);
-                                    LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                    lp.setMargins(20,5,0,0);
-                                    ll.addView(courseButton,lp);
-                                }
-
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                                courseobject[0] = response;
                             }
-                        }
-                    }, new Response.ErrorListener() {
+                        }, new Response.ErrorListener() {
 
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            VolleyLog.d(TAG, "Error: " + error.getMessage());
-                            //pDialog.setMessage(error.getMessage());
-                            Toast.makeText(getApplicationContext(),"Login failed.", LENGTH_LONG).show();
-                            //pDialog.setMessage(error.getCause().toString());
-                            pDialog.hide();
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                                //pDialog.setMessage(error.getMessage());
+                                Toast.makeText(getApplicationContext(), "Failed to fetch course data", LENGTH_LONG).show();
+                                //pDialog.setMessage(error.getCause().toString());
+                                pDialog.hide();
 
-                        }
-                    });
+                            }
+                        });
 
-            requestQueue.add(loginRequest);
+                if (courseobject[0] != null) {
+                    try {
+                        createCourseButtons(courseobject[0]);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    SessionManager.setCourseData(courseobject[0]);
+                } else {
+                    Toast.makeText(getApplicationContext(), "Not registered for any course", LENGTH_LONG).show();
+                }
 
+                requestQueue.add(courseRequest);
+
+
+            }
         }
     }
 
+    // creates course buttons given json object
+    public void createCourseButtons(JSONObject courseobject) throws JSONException {
+        JSONArray courses = (JSONArray) courseobject.get("courses");
+        String coursename = "";
+        String coursecode = "";
+        int courseId = 0;
+        for (int i = 0; i < courses.length(); i++) {
+            JSONObject course = null;
+            try {
+                course = courses.getJSONObject(i);
+                coursename = (String) course.get("name");
+                coursecode = (String) course.get("code");
+                courseId = (int) course.get("id");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            final Button courseButton = new Button(getApplicationContext());
+            final int finalCourseId = courseId;
+            courseButton.setText(coursecode + ": " + coursename);
+            courseButton.setId(finalCourseId);
+            courseButton.setGravity(Gravity.CENTER);
+            courseButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+            courseButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Bundle coursebundle = new Bundle();
+                    coursebundle.putInt("courseId", finalCourseId);
+                    Intent i = new Intent(getApplicationContext(), CoursePage.class);
+                    i.putExtras(coursebundle);
+                    startActivity(i);
+                    finish();
+                }
+            });
+
+            LinearLayout ll = (LinearLayout) findViewById(R.id.courses);
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            lp.setMargins(20, 5, 0, 0);
+            ll.addView(courseButton, lp);
+        }
+
+    }
 }

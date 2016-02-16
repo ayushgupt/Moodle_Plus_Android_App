@@ -1,11 +1,16 @@
 package com.example.quantumcoder.moodleplus;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CoursePage extends AppCompatActivity {
 
@@ -24,6 +29,29 @@ public class CoursePage extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        Bundle coursebundle = getIntent().getExtras();
+        int courseId = coursebundle.getInt("courseId");
+
+        JSONArray courses = null;
+        try {
+            courses = (JSONArray) SessionManager.getCourseData().get("courses");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JSONObject coursedata = null;
+        if (courses != null) {
+            try {
+                coursedata = courses.getJSONObject(courseId-1);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        final ProgressDialog pDialog = new ProgressDialog(this);
+        pDialog.setMessage((CharSequence) coursedata);
+        pDialog.show();
     }
 
 }
