@@ -7,6 +7,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.android.volley.toolbox.HttpClientStack;
+import com.android.volley.toolbox.HttpStack;
+
+import org.apache.http.client.CookieStore;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONObject;
+
 public class SessionManager {
     // Shared Preferences
     static SharedPreferences pref;
@@ -32,11 +40,24 @@ public class SessionManager {
     // Password (make variable private to prevent access from outside)
     public static final String KEY_PASSWORD = "password";
 
+    static HttpStack httpStack;
+
+    // Variables to store user data
+    JSONObject userdata;
+    JSONObject coursedata;
+
+
     // Constructor
     public SessionManager(Context context){
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+
+        DefaultHttpClient httpclient = new DefaultHttpClient();
+
+        CookieStore cookieStore = new BasicCookieStore();
+        httpclient.setCookieStore( cookieStore );
+        httpStack = new HttpClientStack( httpclient );
     }
 
     /**

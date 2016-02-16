@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="com.example.quantumcoder.moodleplus.MainActivity">
+    tools:context="com.example.quantumcoder.moodleplus.CoursePage">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,21 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_main" />
-
-    <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_weight="2" >
-
-        <LinearLayout
-            android:id="@+id/courses"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
-
-        </LinearLayout>
-    </ScrollView>
+    <include layout="@layout/content_course_page" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"

@@ -31,13 +31,20 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.HttpClientStack;
+import com.android.volley.toolbox.HttpStack;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.apache.http.client.CookieStore;
+import org.apache.http.impl.client.BasicCookieStore;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -125,9 +132,13 @@ public class LoginActivity extends AppCompatActivity {
         pDialog.setMessage("Loading");
         */
 
+        /*
+        CookieManager manager = new CookieManager();
+        CookieHandler.setDefault(manager);
+        */
 
 
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        RequestQueue requestQueue = Volley.newRequestQueue( getApplicationContext(), SessionManager.httpStack  );
 
         JsonObjectRequest loginRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
@@ -141,6 +152,9 @@ public class LoginActivity extends AppCompatActivity {
                             String str = response.getString("success") ;
                             if(str.equals("true")){
                                 SessionManager.createLoginSession(username, password);
+                                // Create cookies - implicitly passed to the httpUrlConnection
+
+
                                 Toast.makeText(getApplicationContext(), "Login Successful.", LENGTH_SHORT).show();
                                 // Starting MainActivity
                                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
