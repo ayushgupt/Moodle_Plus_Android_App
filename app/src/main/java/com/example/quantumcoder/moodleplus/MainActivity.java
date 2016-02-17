@@ -74,6 +74,16 @@ public class MainActivity extends AppCompatActivity {
 
             if (SessionManager.getCourseData() != null) {
                 courseobject[0] = SessionManager.getCourseData();
+                pDialog.hide();
+                if (courseobject[0] != null) {
+                    try {
+                        createCourseButtons(courseobject[0]);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Not registered for any course", LENGTH_LONG).show();
+                }
             } else {
 
                 RequestQueue requestQueue = Volley.newRequestQueue(this, SessionManager.httpStack);
@@ -85,8 +95,18 @@ public class MainActivity extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 Log.d(TAG, response.toString());
                                 //pDialog.setMessage("Response: "+ response.toString());
-                                pDialog.hide();
                                 courseobject[0] = response;
+                                pDialog.hide();
+                                if (courseobject[0] != null) {
+                                    try {
+                                        createCourseButtons(courseobject[0]);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    SessionManager.setCourseData(courseobject[0]);
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Not registered for any course", LENGTH_LONG).show();
+                                }
                             }
                         }, new Response.ErrorListener() {
 
@@ -97,25 +117,12 @@ public class MainActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Failed to fetch course data", LENGTH_LONG).show();
                                 //pDialog.setMessage(error.getCause().toString());
                                 pDialog.hide();
-
                             }
                         });
 
-                if (courseobject[0] != null) {
-                    try {
-                        createCourseButtons(courseobject[0]);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    SessionManager.setCourseData(courseobject[0]);
-                } else {
-                    Toast.makeText(getApplicationContext(), "Not registered for any course", LENGTH_LONG).show();
-                }
-
                 requestQueue.add(courseRequest);
-
-
             }
+
         }
     }
 
@@ -129,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
             JSONObject course = null;
             try {
                 course = courses.getJSONObject(i);
+                Log.d(TAG, course.toString());
                 coursename = (String) course.get("name");
                 coursecode = (String) course.get("code");
                 courseId = (int) course.get("id");
@@ -139,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
             final int finalCourseId = courseId;
             courseButton.setText(coursecode + ": " + coursename);
             courseButton.setId(finalCourseId);
+            Log.d(TAG, coursecode);
             courseButton.setGravity(Gravity.CENTER);
             courseButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
@@ -147,16 +156,16 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Bundle coursebundle = new Bundle();
                     coursebundle.putInt("courseId", finalCourseId);
-                    Intent i = new Intent(getApplicationContext(), CoursePage.class);
-                    i.putExtras(coursebundle);
-                    startActivity(i);
+                    Intent courseintent = new Intent(getApplicationContext(), CoursePage.class);
+                    courseintent.putExtras(coursebundle);
+                    startActivity(courseintent);
                     finish();
                 }
             });
 
             LinearLayout ll = (LinearLayout) findViewById(R.id.courses);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(20, 5, 0, 0);
+            lp.setMargins(20,50,0,0);
             ll.addView(courseButton, lp);
         }
 

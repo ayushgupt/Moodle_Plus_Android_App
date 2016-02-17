@@ -50,7 +50,7 @@ public class CoursePage extends AppCompatActivity {
 
 
         final ProgressDialog pDialog = new ProgressDialog(this);
-        pDialog.setMessage((CharSequence) coursedata);
+        pDialog.setMessage(coursedata.toString());
         pDialog.show();
     }
 

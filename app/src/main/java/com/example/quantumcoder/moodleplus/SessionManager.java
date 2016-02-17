@@ -67,11 +67,7 @@ public class SessionManager {
     public static void createLoginSession(String name, String password){
         // Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
-
-
         editor.putString(KEY_NAME, name);
-
-        
         editor.putString(KEY_PASSWORD, password);
 
         // commit changes
@@ -170,6 +166,7 @@ public class SessionManager {
 
     public static JSONObject getCourseData(){
         String coursedata = pref.getString(KEY_COURSEDATA,null);
+        if(coursedata==null){ return null; }
         try {
             JSONObject coursedata_json = new JSONObject(coursedata);
             return coursedata_json;

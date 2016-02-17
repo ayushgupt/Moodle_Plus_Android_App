@@ -57,7 +57,7 @@ import static com.android.volley.VolleyLog.TAG;
  * A login screen that offers login via username/password.
  */
 public class LoginActivity extends AppCompatActivity {
-    static final String ip = "192.168.133.1";
+    static final String ip = "10.192.44.89:8000";
 
     // UI references.
     private EditText mUsernameView;
@@ -103,7 +103,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void attemptLogin() {
         /* Form is validated, can be submitted now */
-        checkValidation();
 
         if(!isNetworkConnected()){ makeText(LoginActivity.this, "Please connect to network", LENGTH_LONG).show(); }
 
