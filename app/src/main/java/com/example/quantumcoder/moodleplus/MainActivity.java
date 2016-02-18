@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        //button present by default
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new OnClickListener() {
             @Override
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //checks if the Session Manager is logged in
         if (SessionManager.isLoggedIn()) {
             /*
             HashMap<String,String> userdata = SessionManager.getUserDetails();
@@ -64,30 +65,42 @@ public class MainActivity extends AppCompatActivity {
             //Toast.makeText(getApplicationContext(), username + "\n" + password , LENGTH_LONG).show();
 
 
+            //making the url by concatinating ip and adding course list API url given in pdf
             String course_url = "http://"+LoginActivity.ip+"/courses/list.json";
 
+            //makes a dialog box which shows that courses are being loaded
             final ProgressDialog pDialog = new ProgressDialog(this);
             pDialog.setMessage("Loading...");
             pDialog.show();
 
+            //course object JSON Array is created
             final JSONObject[] courseobject = {null};
 
-            if (SessionManager.getCourseData() != null) {
+            //for the first time get course data will return null as till now set course data has not been called
+            if (SessionManager.getCourseData() != null)
+            {
+                //This is entered if the user is returning to this course page from somewhere else...
                 courseobject[0] = SessionManager.getCourseData();
+                //The Dialog box is hidden
                 pDialog.hide();
-                if (courseobject[0] != null) {
-                    try {
+                if (courseobject[0] != null)
+                {
+                    try
+                    {
+                        //create course button is called again now...
                         createCourseButtons(courseobject[0]);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                } else {
+                } else
+                {
+                    //The Response is null and the user is not registered in any course till now...
                     Toast.makeText(getApplicationContext(), "Not registered for any course", LENGTH_LONG).show();
                 }
             } else {
-
+                //this is entered when the user has just logged in...
                 RequestQueue requestQueue = Volley.newRequestQueue(this, SessionManager.httpStack);
-
+                //requestqueue is made using http-stack as we need to check the sessions of the logged in user
                 JsonObjectRequest courseRequest = new JsonObjectRequest
                         (Request.Method.GET, course_url, null, new Response.Listener<JSONObject>() {
 
@@ -95,23 +108,33 @@ public class MainActivity extends AppCompatActivity {
                             public void onResponse(JSONObject response) {
                                 Log.d(TAG, response.toString());
                                 //pDialog.setMessage("Response: "+ response.toString());
+                                //0th element of the course object now has the response
                                 courseobject[0] = response;
+                                //So the dialog box is hid now...
                                 pDialog.hide();
-                                if (courseobject[0] != null) {
-                                    try {
+                                if (courseobject[0] != null)
+                                {
+                                    try
+                                    {
+                                        //now the json object of the course list is passed to the create button function
                                         createCourseButtons(courseobject[0]);
-                                    } catch (JSONException e) {
+                                    } catch (JSONException e)
+                                    {
                                         e.printStackTrace();
                                     }
+                                    //Also the Course data is put in a hash map of the Session Manager Preferences so that we dont need to call this API again...
                                     SessionManager.setCourseData(courseobject[0]);
-                                } else {
+                                } else
+                                {
+                                    //The Response is null and the user is not registered in any course till now...
                                     Toast.makeText(getApplicationContext(), "Not registered for any course", LENGTH_LONG).show();
                                 }
                             }
                         }, new Response.ErrorListener() {
 
                             @Override
-                            public void onErrorResponse(VolleyError error) {
+                            public void onErrorResponse(VolleyError error)
+                            {
                                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                                 //pDialog.setMessage(error.getMessage());
                                 Toast.makeText(getApplicationContext(), "Failed to fetch course data", LENGTH_LONG).show();
@@ -120,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         });
 
+                //Course Request is now added to the Request Queue...
                 requestQueue.add(courseRequest);
             }
 
