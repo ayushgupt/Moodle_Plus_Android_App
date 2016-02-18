@@ -30,18 +30,23 @@ public class CoursePage extends AppCompatActivity {
             }
         });
 
+        //Id of the specific course which was put into extras is now extracted into coursebundle
         Bundle coursebundle = getIntent().getExtras();
         int courseId = coursebundle.getInt("courseId");
-
+        //course id is hence succesfully passed...!!!
         JSONArray courses = null;
-        try {
+        try
+        {
+            //courses now has json array of all the courses.!!
             courses = (JSONArray) SessionManager.getCourseData().get("courses");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         JSONObject coursedata = null;
         if (courses != null) {
-            try {
+            try
+            {
+                //course data has json only of that course
                 coursedata = courses.getJSONObject(courseId-1);
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -50,6 +55,7 @@ public class CoursePage extends AppCompatActivity {
 
 
         final ProgressDialog pDialog = new ProgressDialog(this);
+        //course data is shown to message to test whether things are working till now..
         pDialog.setMessage(coursedata.toString());
         pDialog.show();
     }

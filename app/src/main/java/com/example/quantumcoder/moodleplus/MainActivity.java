@@ -151,33 +151,48 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // creates course buttons given json object
-    public void createCourseButtons(JSONObject courseobject) throws JSONException {
+    public void createCourseButtons(JSONObject courseobject) throws JSONException
+    {
+        //The CourseObject contained Json of user and courses..So courses now has only course specific json..
         JSONArray courses = (JSONArray) courseobject.get("courses");
         String coursename = "";
         String coursecode = "";
         int courseId = 0;
-        for (int i = 0; i < courses.length(); i++) {
+        //For Loop for Making Buttons.. Button for each course is made in one loop
+        for (int i = 0; i < courses.length(); i++)
+        {
+            //made a temporary jsonobject which has json of only one course at a time
             JSONObject course = null;
-            try {
+            try
+            {
                 course = courses.getJSONObject(i);
                 Log.d(TAG, course.toString());
                 coursename = (String) course.get("name");
                 coursecode = (String) course.get("code");
                 courseId = (int) course.get("id");
-            } catch (JSONException e) {
+                //Course Name, Code and Id is assigned in different Temporary variables...
+            } catch (JSONException e)
+            {
                 e.printStackTrace();
             }
             final Button courseButton = new Button(getApplicationContext());
             final int finalCourseId = courseId;
+            //Buttons Text is Set By concatenating Code and Name
             courseButton.setText(coursecode + ": " + coursename);
+            //Buttons Id is its course Id
             courseButton.setId(finalCourseId);
             Log.d(TAG, coursecode);
+            //Buttons Alignment
             courseButton.setGravity(Gravity.CENTER);
             courseButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-            courseButton.setOnClickListener(new OnClickListener() {
+            //What happens on Clicking The Button..???
+            courseButton.setOnClickListener(new OnClickListener()
+            {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
+                    //course bundle is made and the course Id is put in it and passed to that course specific page by using CourseIntent
                     Bundle coursebundle = new Bundle();
                     coursebundle.putInt("courseId", finalCourseId);
                     Intent courseintent = new Intent(getApplicationContext(), CoursePage.class);
@@ -187,9 +202,12 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            //ll object of type Linear Layout is made which is basically instance of Linear Layout whose id is courses...
+            //lp object of linear layout parameters are made
             LinearLayout ll = (LinearLayout) findViewById(R.id.courses);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(20,50,0,0);
+            //Button and Parameters are added to the reference of Linear Layout we made...
             ll.addView(courseButton, lp);
         }
 
