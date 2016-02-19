@@ -46,6 +46,8 @@ public class SessionManager {
     // Keys to store user data
     public static final String KEY_USERDATA = "userdata";
     public static final String KEY_COURSEDATA = "coursedata";
+    public static final String KEY_GRADES = "grades";
+
 
 
     // Constructor
@@ -170,6 +172,23 @@ public class SessionManager {
         try {
             JSONObject coursedata_json = new JSONObject(coursedata);
             return coursedata_json;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void setGrades(JSONObject grades){
+        editor.putString(KEY_GRADES,grades.toString());
+        editor.commit();
+    }
+
+    public static JSONObject getGrades(){
+        String grades = pref.getString(KEY_GRADES,null);
+        if(grades==null){ return null; }
+        try {
+            JSONObject grades_json = new JSONObject(grades);
+            return grades_json;
         } catch (JSONException e) {
             e.printStackTrace();
         }

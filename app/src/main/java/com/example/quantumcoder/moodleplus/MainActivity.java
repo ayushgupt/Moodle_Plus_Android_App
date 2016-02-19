@@ -54,24 +54,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        callCourse();
+        //callGrades();
+    }
+
+    public void callCourse(){
         //checks if the Session Manager is logged in
         if (SessionManager.isLoggedIn()) {
-            /*
-            HashMap<String,String> userdata = SessionManager.getUserDetails();
-            String username = userdata.get(SessionManager.KEY_NAME);
-            String password = userdata.get(SessionManager.KEY_PASSWORD);
-            */
-            Toast.makeText(getApplicationContext(), "Session created", LENGTH_SHORT).show();
-            //Toast.makeText(getApplicationContext(), username + "\n" + password , LENGTH_LONG).show();
-
-
             //making the url by concatinating ip and adding course list API url given in pdf
             String course_url = "http://"+LoginActivity.ip+"/courses/list.json";
 
             //makes a dialog box which shows that courses are being loaded
-            final ProgressDialog pDialog = new ProgressDialog(this);
-            pDialog.setMessage("Loading...");
-            pDialog.show();
+            //final ProgressDialog pDialog = new ProgressDialog(this);
+            //pDialog.setMessage("Loading...");
+            //pDialog.show();
 
             //course object JSON Array is created
             final JSONObject[] courseobject = {null};
@@ -82,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 //This is entered if the user is returning to this course page from somewhere else...
                 courseobject[0] = SessionManager.getCourseData();
                 //The Dialog box is hidden
-                pDialog.hide();
+                //pDialog.hide();
                 if (courseobject[0] != null)
                 {
                     try
@@ -111,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                                 //0th element of the course object now has the response
                                 courseobject[0] = response;
                                 //So the dialog box is hid now...
-                                pDialog.hide();
+                                //pDialog.hide();
                                 if (courseobject[0] != null)
                                 {
                                     try
@@ -124,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                     //Also the Course data is put in a hash map of the Session Manager Preferences so that we dont need to call this API again...
                                     SessionManager.setCourseData(courseobject[0]);
+                                    callGrades();
                                 } else
                                 {
                                     //The Response is null and the user is not registered in any course till now...
@@ -139,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                                 //pDialog.setMessage(error.getMessage());
                                 Toast.makeText(getApplicationContext(), "Failed to fetch course data", LENGTH_LONG).show();
                                 //pDialog.setMessage(error.getCause().toString());
-                                pDialog.hide();
+                                //pDialog.hide();
                             }
                         });
 
@@ -150,7 +147,61 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void callGrades(){
+        //checks if the Session Manager is logged in
+        if (SessionManager.isLoggedIn()) {
+            //making the url by concatinating ip and adding grades list API url given in pdf
+            String grades_url = "http://"+LoginActivity.ip+"/default/grades.json";
+
+            //makes a dialog box which shows that grades are being loaded
+            //final ProgressDialog pDialog = new ProgressDialog(this);
+            //pDialog.setMessage("Loading...");
+            //pDialog.show();
+
+            //grades object JSON Array is created
+            final JSONObject[] gradesobject = {null};
+
+            //for the first time get grades data will return null as till now set grades data has not been called
+            if (SessionManager.getGrades() == null) {
+                //this is entered when the user has just logged in...
+                RequestQueue requestQueue = Volley.newRequestQueue(this, SessionManager.httpStack);
+                //requestqueue is made using http-stack as we need to check the sessions of the logged in user
+                JsonObjectRequest gradesRequest = new JsonObjectRequest
+                        (Request.Method.GET, grades_url, null, new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.d(TAG, response.toString());
+                                //pDialog.setMessage("Response: "+ response.toString());
+                                //0th element of the grades object now has the response
+                                gradesobject[0] = response;
+                                //So the dialog box is hid now...
+                                //pDialog.hide();
+                                //Also the Grades data is put in a hash map of the Session Manager Preferences so that we dont need to call this API again...
+                                SessionManager.setGrades(gradesobject[0]);
+                            }
+                        }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error)
+                            {
+                                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                                //pDialog.setMessage(error.getMessage());
+                                Toast.makeText(getApplicationContext(), "Failed to fetch grades data", LENGTH_LONG).show();
+                                //pDialog.setMessage(error.getCause().toString());
+                                //pDialog.hide();
+                            }
+                        });
+
+                //Grades Request is now added to the Request Queue...
+                requestQueue.add(gradesRequest);
+            }
+
+        }
+    }
+
     // creates course buttons given json object
+    //TODO: Change layout and design of course buttons
     public void createCourseButtons(JSONObject courseobject) throws JSONException
     {
         //The CourseObject contained Json of user and courses..So courses now has only course specific json..
