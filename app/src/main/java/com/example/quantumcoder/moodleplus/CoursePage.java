@@ -47,7 +47,15 @@ public class CoursePage extends AppCompatActivity {
             try
             {
                 //course data has json only of that course
-                coursedata = courses.getJSONObject(courseId-1);
+                for (int i = 0; i < courses.length(); i++)
+                {
+                    JSONObject course=courses.getJSONObject(i);
+                    if(courseId==(int)course.get("id"))
+                    {
+                        coursedata=course;
+                        break;
+                    }
+                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
