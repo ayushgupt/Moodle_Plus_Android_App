@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+
+    <item android:title="Home"
+          android:id="@+id/nav_item_home"
+          android:icon="@drawable/home"/>
+
+    <item android:title="Notifications"
+          android:id="@+id/nav_item_notif"
+          android:icon="@drawable/googlealerts"/>
+
+    <item android:title="Grades"
+          android:id="@+id/nav_item_gardes"
+          android:icon="@drawable/gallery"/>
+
+
+
+    <item android:title="courses">
+        <menu>                              <!-- add courses here -->
+            <item
+                android:title="course1"
+                android:icon="@drawable/courses"
+                android:id="@+id/nav_item_courses"/>
+            <item
+                android:title="course2"
+                android:icon="@drawable/bin"/>
+        </menu>
+    </item>
+
+    <group android:id="@+id/group_settings_id">
+
+        <item android:title="Profile"
+              android:icon="@drawable/user"
+            android:id="@+id/nav_item_profile"/>
+        <item android:title="Logout"
+             android:icon="@drawable/export"
+            android:id="@+id/nav_item_logout"/>
+    </group>
+
+
+</menu>

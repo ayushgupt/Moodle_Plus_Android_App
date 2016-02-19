@@ -1,19 +1,21 @@
 package com.example.quantumcoder.moodleplus;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -28,14 +30,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.net.CookieHandler;
-import java.net.CookieManager;
-import java.util.HashMap;
-
 import static android.widget.Toast.*;
 import static com.android.volley.VolleyLog.TAG;
 
 public class MainActivity extends AppCompatActivity {
+
+    DrawerLayout mDrawerLayout;
+    NavigationView mNavigationView;
+    FragmentManager mFragmentManager;
+    FragmentTransaction mFragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,18 +47,80 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //button present by default
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        // Setup UI of MainActivity
+        setup();
 
         callCourse();
-        //callGrades();
+        //callGrades(); - called in response of courses request
+    }
+
+    void setup(){
+        /**
+         *Setup the DrawerLayout and NavigationView
+         */
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mNavigationView = (NavigationView) findViewById(R.id.shitstuff) ;
+
+        /**
+         * Lets inflate the very first fragment
+         * Here , we are inflating the FragmentTabs as the first Fragment
+         */
+
+        mFragmentManager = getSupportFragmentManager();
+        mFragmentTransaction = mFragmentManager.beginTransaction();
+        mFragmentTransaction.replace(R.id.containerView,new FragmentTabs()).commit();
+
+        /**
+         * Setup click events on the Navigation View Items.
+         */
+
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                mDrawerLayout.closeDrawers();
+
+
+
+                if (menuItem.getItemId() == R.id.nav_item_notif) {
+                    FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.containerView,new FragmentNotifications()).commit();
+
+                }
+
+                if (menuItem.getItemId() == R.id.nav_item_home) {
+                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                    xfragmentTransaction.replace(R.id.containerView,new FragmentHome()).commit();
+                }
+                if (menuItem.getItemId() == R.id.nav_item_gardes) {
+                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                    xfragmentTransaction.replace(R.id.containerView,new FragmentLeftGrade()).commit();
+                }
+                if (menuItem.getItemId() == R.id.nav_item_logout) {
+                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                    xfragmentTransaction.replace(R.id.containerView,new FragmentLogout()).commit();
+                }
+                if (menuItem.getItemId() == R.id.nav_item_profile) {
+                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                    xfragmentTransaction.replace(R.id.containerView,new FragmentProfile()).commit();
+                }
+                return false;
+            }
+
+        });
+
+        /**
+         * Setup Drawer Toggle of the Toolbar
+         */
+
+        android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,mDrawerLayout, toolbar,R.string.app_name,
+                R.string.app_name);
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        mDrawerToggle.syncState();
+
     }
 
     public void callCourse(){
@@ -81,13 +146,10 @@ public class MainActivity extends AppCompatActivity {
                 //pDialog.hide();
                 if (courseobject[0] != null)
                 {
-                    try
-                    {
-                        //create course button is called again now...
-                        createCourseButtons(courseobject[0]);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    // Call home fragment - course buttons created there
+                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                    xfragmentTransaction.replace(R.id.containerView,new FragmentHome()).commit();
+
                 } else
                 {
                     //The Response is null and the user is not registered in any course till now...
@@ -110,16 +172,14 @@ public class MainActivity extends AppCompatActivity {
                                 //pDialog.hide();
                                 if (courseobject[0] != null)
                                 {
-                                    try
-                                    {
-                                        //now the json object of the course list is passed to the create button function
-                                        createCourseButtons(courseobject[0]);
-                                    } catch (JSONException e)
-                                    {
-                                        e.printStackTrace();
-                                    }
                                     //Also the Course data is put in a hash map of the Session Manager Preferences so that we dont need to call this API again...
                                     SessionManager.setCourseData(courseobject[0]);
+
+                                    // Call home fragment - course buttons created there
+                                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                                    xfragmentTransaction.replace(R.id.containerView,new FragmentHome()).commit();
+
+
                                     callGrades();
                                 } else
                                 {
@@ -200,67 +260,5 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    // creates course buttons given json object
-    //TODO: Change layout and design of course buttons
-    public void createCourseButtons(JSONObject courseobject) throws JSONException
-    {
-        //The CourseObject contained Json of user and courses..So courses now has only course specific json..
-        JSONArray courses = (JSONArray) courseobject.get("courses");
-        String coursename = "";
-        String coursecode = "";
-        int courseId = 0;
-        //For Loop for Making Buttons.. Button for each course is made in one loop
-        for (int i = 0; i < courses.length(); i++)
-        {
-            //made a temporary jsonobject which has json of only one course at a time
-            JSONObject course = null;
-            try
-            {
-                course = courses.getJSONObject(i);
-                Log.d(TAG, course.toString());
-                coursename = (String) course.get("name");
-                coursecode = (String) course.get("code");
-                courseId = (int) course.get("id");
-                //Course Name, Code and Id is assigned in different Temporary variables...
-            } catch (JSONException e)
-            {
-                e.printStackTrace();
-            }
-            final Button courseButton = new Button(getApplicationContext());
-            final int finalCourseId = courseId;
-            //Buttons Text is Set By concatenating Code and Name
-            courseButton.setText(coursecode + ": " + coursename);
-            //Buttons Id is its course Id
-            courseButton.setId(finalCourseId);
-            Log.d(TAG, coursecode);
-            //Buttons Alignment
-            courseButton.setGravity(Gravity.CENTER);
-            courseButton.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-            //What happens on Clicking The Button..???
-            courseButton.setOnClickListener(new OnClickListener()
-            {
-                @Override
-                public void onClick(View v)
-                {
-                    //course bundle is made and the course Id is put in it and passed to that course specific page by using CourseIntent
-                    Bundle coursebundle = new Bundle();
-                    coursebundle.putInt("courseId", finalCourseId);
-                    Intent courseintent = new Intent(getApplicationContext(), CoursePage.class);
-                    courseintent.putExtras(coursebundle);
-                    startActivity(courseintent);
-                    finish();
-                }
-            });
-
-            //ll object of type Linear Layout is made which is basically instance of Linear Layout whose id is courses...
-            //lp object of linear layout parameters are made
-            LinearLayout ll = (LinearLayout) findViewById(R.id.courses);
-            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            lp.setMargins(20,50,0,0);
-            //Button and Parameters are added to the reference of Linear Layout we made...
-            ll.addView(courseButton, lp);
-        }
-
-    }
 }
