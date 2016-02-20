@@ -1,8 +1,11 @@
 package com.example.quantumcoder.moodleplus;
 
+import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
@@ -47,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+
+
         // Setup UI of MainActivity
         setup();
 
@@ -69,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.replace(R.id.containerView,new FragmentTabs()).commit();
+        mFragmentTransaction.replace(R.id.containerView, new FragmentThreads()).commit();
 
         /**
          * Setup click events on the Navigation View Items.
@@ -98,7 +103,10 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (menuItem.getItemId() == R.id.nav_item_logout) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
-                    xfragmentTransaction.replace(R.id.containerView,new FragmentLogout()).commit();
+                    FragmentLogout fragment = new FragmentLogout() ;
+                    xfragmentTransaction.attach(fragment); //.commit();
+
+                    xfragmentTransaction.replace(R.id.containerView, fragment).commit();
                 }
                 if (menuItem.getItemId() == R.id.nav_item_profile) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
@@ -148,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
                 {
                     // Call home fragment - course buttons created there
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                    //xfragmentTransaction.attach(new ) ;
                     xfragmentTransaction.replace(R.id.containerView,new FragmentHome()).commit();
 
                 } else
