@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mNavigationView = (NavigationView) findViewById(R.id.shitstuff) ;
 
+        //mNavigationView.addView();
         /**
          * Lets inflate the very first fragment
          * Here , we are inflating the FragmentTabs as the first Fragment
@@ -100,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
                 if (menuItem.getItemId() == R.id.nav_item_gardes) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
                     xfragmentTransaction.replace(R.id.containerView,new FragmentLeftGrade()).commit();
+                }
+                if (menuItem.getItemId() == R.id.nav_item_courses) {
+                    FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
+                    xfragmentTransaction.replace(R.id.containerView,new FragmentTabs()).commit();
                 }
                 if (menuItem.getItemId() == R.id.nav_item_logout) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
