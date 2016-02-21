@@ -9,14 +9,21 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static android.widget.Toast.LENGTH_SHORT;
 import static com.android.volley.VolleyLog.TAG;
 
 public class FragmentHome extends Fragment {
@@ -27,6 +34,41 @@ public class FragmentHome extends Fragment {
         return inflater.inflate(R.layout.home_layout,null);
     }
 
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.v("HomeFragment", "onActivityCreated().");
+        Log.v("ListsavedInstanceState", savedInstanceState == null ? "true" : "false");
+
+        //Generate list View from ArrayList
+        displayListView();
+
+    }
+    private void displayListView() {
+
+        //Array list of countries
+
+        String t[] = {"Course1","Course2"} ;
+        //create an ArrayAdaptar from the String Array
+        CoursesArrayAdapter dataAdapter = new CoursesArrayAdapter(getContext(), t);
+        ListView listView = (ListView) getView().findViewById(R.id.Courses);
+        // Assign adapter to ListView
+        listView.setAdapter(dataAdapter);
+        //enables filtering for the contents of the given ListView
+        listView.setTextFilterEnabled(true);
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                Toast.makeText(getActivity().getApplicationContext(), "Course selected", LENGTH_SHORT).show();
+
+                // Send the URL to the host activity
+                //    mListener.onURLSelected(((TextView) view).getText().toString());
+
+            }
+        });
+    }
+    /*
     @Override
     public void onStart() {
         super.onStart();
@@ -36,9 +78,10 @@ public class FragmentHome extends Fragment {
             e.printStackTrace();
         }
     }
-
+*/
     // creates course buttons given json object
     //TODO: Change layout and design of course buttons
+    /*
     public void createCourseButtons(JSONObject courseobject) throws JSONException
     {
         //The CourseObject contained Json of user and courses..So courses now has only course specific json..
@@ -96,4 +139,5 @@ public class FragmentHome extends Fragment {
         }
 
     }
+    */
 }

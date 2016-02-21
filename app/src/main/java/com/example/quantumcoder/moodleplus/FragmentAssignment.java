@@ -1,19 +1,13 @@
 package com.example.quantumcoder.moodleplus;
 
-import android.app.Activity;
-import android.app.ListActivity;
-import android.app.ListFragment;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,6 +17,7 @@ import static android.widget.Toast.LENGTH_SHORT;
 
 
 //http://www.mysamplecode.com/2012/08/android-fragment-example.html
+//http://www.vogella.com/tutorials/AndroidListView/article.html
 
 public class FragmentAssignment extends  Fragment  {
 
@@ -60,10 +55,12 @@ public class FragmentAssignment extends  Fragment  {
         urlList.add("http://www.google.com");
         urlList.add("http://mail.google.com");
         urlList.add("http://maps.google.com");
-        String t[] = {"hello","yo"} ;
+
+        String t[] = {"Ass1","Ass2"} ;
+        String m[]= {"Today","Tommo"};
         //create an ArrayAdaptar from the String Array
-        MySimpleArrayAdapter dataAdapter = new MySimpleArrayAdapter(getContext(), t);
-        ListView listView = (ListView) getView().findViewById(R.id.listofURLs);
+        assignListArrayAdapter dataAdapter = new assignListArrayAdapter(getContext(), t, m);
+        ListView listView = (ListView) getView().findViewById(R.id.listofAss);
         // Assign adapter to ListView
         listView.setAdapter(dataAdapter);
         //enables filtering for the contents of the given ListView
@@ -73,10 +70,10 @@ public class FragmentAssignment extends  Fragment  {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(getActivity().getApplicationContext(), "Clicked on url ", LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(), "URL selected", LENGTH_SHORT).show();
 
                 // Send the URL to the host activity
-          //      mListener.onURLSelected(((TextView) view).getText().toString());
+           //    mListener.onURLSelected(((TextView) view).getText().toString());
 
             }
         });

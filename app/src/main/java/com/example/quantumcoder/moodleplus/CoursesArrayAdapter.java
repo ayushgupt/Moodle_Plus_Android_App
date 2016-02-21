@@ -8,14 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-public class MySimpleArrayAdapter extends ArrayAdapter<String> {
+public class CoursesArrayAdapter extends ArrayAdapter<String> {
     private final Context context;
     private final String[] values;
 
-    public MySimpleArrayAdapter(Context context, String[] values) {
+    public CoursesArrayAdapter(Context context, String[] values) {
         super(context, -1, values);
         this.context = context;
         this.values = values;
@@ -25,19 +24,14 @@ public class MySimpleArrayAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.timepass_layout, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.firstLine);
-        TextView textView2 = (TextView) rowView.findViewById(R.id.secondLine);
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
-        textView.setText(values[position]);
+        View rowView = inflater.inflate(R.layout.courselist_layout, parent, false);
+        //TextView textView = (TextView) rowView.findViewById(R.id.no);
+        TextView textView2 = (TextView) rowView.findViewById(R.id.courseName);
+
+        //textView.setText(Integer.toString(position));
         textView2.setText(values[position]);
         // change the icon for Windows and iPhone
         String s = values[position];
-        if (s.startsWith("iPhone")) {
-            imageView.setImageResource(R.drawable.home);
-        } else {
-            imageView.setImageResource(R.drawable.help);
-        }
 
         return rowView;
     }
