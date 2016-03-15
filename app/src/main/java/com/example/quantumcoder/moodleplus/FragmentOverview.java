@@ -31,8 +31,9 @@ public class FragmentOverview extends Fragment {
 
 
 
-        String t[] = {"Week1","Week2"} ;
-        String m[]= {"11-15-16","12-13-12"};
+        String t[] = {"Week1","Week2","Week3","Week4","Week5","Week6","Week7" +
+                ""} ;
+        String m[]= {"11-1-16","18-1-16","25-1-16","1-2-16","8-2-16","15-2-16","22-2-16"};
         //create an ArrayAdaptar from the String Array
         OverviewArrayAdapter dataAdapter = new OverviewArrayAdapter(getContext(), t, m);
         ListView listView = (ListView) getView().findViewById(R.id.overview_timeline);

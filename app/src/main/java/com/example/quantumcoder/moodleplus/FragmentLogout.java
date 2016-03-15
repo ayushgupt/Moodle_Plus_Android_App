@@ -32,12 +32,16 @@ public class FragmentLogout extends Fragment {
         pDialog.setMessage("Logging out");
         pDialog.show();
         Toast.makeText( getActivity().getApplicationContext() ,"Succesfully logged out", LENGTH_LONG).show();
+
+        SessionManager.logoutUser();
+
         new Handler().postDelayed(new Runnable() {
 
             /*
-             * Showing splash screen with a timer. This will be useful when you
-             * want to show case your app logo / company
+            Showing splash screen with a timer. This will be useful when you
+             want to show case your app logo / company
              */
+
 
             @Override
             public void run() {
@@ -52,6 +56,7 @@ public class FragmentLogout extends Fragment {
                 getActivity().finish();
             }
         }, SPLASH_TIME_OUT);
+
 
         return inflater.inflate(R.layout.logout_layout,null);
             //move to loginactivity page

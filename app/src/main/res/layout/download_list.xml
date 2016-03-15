@@ -4,61 +4,50 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        >
-
+        android:layout_marginTop="1dp">
         <TableRow
-            android:background="#607D8B"
-
-            >
+            android:background="#ECEFF1"
+            android:padding="2dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="SNo " />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Notification"
-                android:width="170dp"
+                android:text="1"
+                android:id="@+id/download_sno"
+                android:width="20dp"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Time" />
+                android:width="70dp"
+                android:textColor="@android:color/holo_blue_dark"
+                android:id="@+id/download_title"
+                android:text="No Files" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/download_action"
+                android:text="Download"
+                android:width="50dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/download_time"
+                android:width="40dp"
+                android:text="" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:id="@+id/download_privacy"
+                android:text="" />
         </TableRow>
-
-        <ListView android:id="@+id/notification" android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            />
-       <!-- <TableRow
-            android:background="#ECEFF1"
-            android:padding="5dp"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="4.3" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:width="170dp"
-                android:text="Android Jelly Bean not your lover she is the girl who claims i am the one " />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="18" />
-        </TableRow>
-        -->
     </TableLayout>
-
 </LinearLayout>

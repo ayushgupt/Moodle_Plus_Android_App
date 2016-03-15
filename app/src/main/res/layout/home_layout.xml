@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textSize="30sp"
-        android:id="@id/textView"
+        android:id="@+id/textView"
         android:layout_centerHorizontal="true"
         android:text="2016, Winter Semester"
         android:textColor="#000"

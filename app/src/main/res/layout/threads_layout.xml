@@ -24,7 +24,9 @@
         android:layout_centerHorizontal="true"
         android:textColor="@android:color/holo_blue_dark"
         android:text="Faculty"
-        android:id="@+id/Faculty"/>
+        android:id="@+id/Faculty"
+        android:visibility="gone"
+        />
 
 
     <EditText
@@ -35,12 +37,12 @@
         android:layout_height="wrap_content"
 
         android:hint="Title"
-        android:id="@+id/title"
+        android:id="@+id/threadtitle"
         />
     <EditText
         android:width="500px"
         android:height="300px"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/threadtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
@@ -54,5 +56,76 @@
         android:text="Submit"
         android:gravity="center"
         android:id="@+id/button"
+        android:onClick="addThread"
          />
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/button"
+        >
+
+
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            >
+
+            <TableRow
+                android:background="#607D8B"
+
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="SNo " />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Title"
+                    android:width="140dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Updated on" />
+            </TableRow>
+
+            <ListView android:id="@+id/threads" android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                />
+            <!-- <TableRow
+                 android:background="#ECEFF1"
+                 android:padding="5dp"
+                 >
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:text="4.3" />
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:width="170dp"
+                     android:text="Android Jelly Bean not your lover she is the girl who claims i am the one " />
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:text="18" />
+             </TableRow>
+             -->
+        </TableLayout>
+
+    </LinearLayout>
+
 </RelativeLayout>
+
+

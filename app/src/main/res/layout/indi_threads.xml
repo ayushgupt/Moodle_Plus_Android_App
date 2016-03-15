@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="100dip"
+    android:padding="6dip"
+    >
+
+    <TextView
+        android:id="@+id/thread_course_no"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dip"
+        android:textSize="8dip"
+        android:text="COP290"
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/deadline"
+        android:layout_width="fill_parent"
+        android:layout_height="26dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/thread_course_no"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="Created at 12-1-5 "
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/ass_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/deadline"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@id/thread_course_no"
+        android:gravity="center_vertical"
+        android:text="Example application is very good i love it and it is awesome to hear about it"
+        android:textSize="16sp" />
+
+</RelativeLayout>
+
+
+
+</LinearLayout>
+

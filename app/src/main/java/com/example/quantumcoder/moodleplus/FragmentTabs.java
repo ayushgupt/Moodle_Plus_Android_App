@@ -1,5 +1,7 @@
 package com.example.quantumcoder.moodleplus;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -7,9 +9,26 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import static android.widget.Toast.LENGTH_LONG;
+import static com.android.volley.VolleyLog.TAG;
 
 public class FragmentTabs extends Fragment {
 
@@ -23,7 +42,7 @@ public class FragmentTabs extends Fragment {
         /**
          *Inflate tab_layout and setup Views.
          */
-            View x =  inflater.inflate(R.layout.tab_layout,null);
+            View x =  inflater.inflate(R.layout.tab_layout, null);
             tabLayout = (TabLayout) x.findViewById(R.id.tabs);
             viewPager = (ViewPager) x.findViewById(R.id.viewpager);
 
@@ -41,13 +60,26 @@ public class FragmentTabs extends Fragment {
         tabLayout.post(new Runnable() {
             @Override
             public void run() {
-                    tabLayout.setupWithViewPager(viewPager);
-                   }
+                tabLayout.setupWithViewPager(viewPager);
+            }
         });
 
         return x;
 
     }
+
+
+
+
+
+
+    /*public void onAttach(Context context) {
+        super.onAttach(context);
+
+
+    }
+*/
+
 
     class MyAdapter extends FragmentPagerAdapter{
 

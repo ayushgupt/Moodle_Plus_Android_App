@@ -14,11 +14,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/courseName"
         android:layout_toRightOf="@id/no"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginBottom="7dp"
         android:textSize="25sp"
         android:textColor="@android:color/holo_blue_dark"
-        android:gravity="center"
+
         />
 
 

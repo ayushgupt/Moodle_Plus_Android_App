@@ -1,27 +1,21 @@
 package com.example.quantumcoder.moodleplus;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static android.widget.Toast.LENGTH_SHORT;
 import static com.android.volley.VolleyLog.TAG;
@@ -45,9 +39,40 @@ public class FragmentHome extends Fragment {
     }
     private void displayListView() {
 
-        //Array list of countries
+        JSONObject courseobject = SessionManager.getCourseData();
+        JSONArray courses = null;
+        try {
+            courses = (JSONArray) courseobject.get("courses");
+        } catch (JSONException e) {
+            Toast.makeText(getContext(),"Not registered for any courses",Toast.LENGTH_LONG).show();
+        }
+        //Array of courses
+        String t[] = new String[courses.length()];
+        String coursename = "";
+        String coursecode = "";
+        int courseId = 0;
+        //For Loop for Making Buttons.. Button for each course is made in one loop
+        for (int i = 0; i < courses.length(); i++)
+        {
+            //made a temporary jsonobject which has json of only one course at a time
+            JSONObject course = null;
+            try
+            {
+                course = courses.getJSONObject(i);
+                Log.d(TAG, course.toString());
+                coursename = (String) course.get("name");
+                coursecode = (String) course.get("code");
+                courseId = (int) course.get("id");
 
-        String t[] = {"Course1","Course2"} ;
+                t[i] = coursecode +":"+ coursename;
+            } catch (JSONException e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+
+
         //create an ArrayAdaptar from the String Array
         CoursesArrayAdapter dataAdapter = new CoursesArrayAdapter(getContext(), t);
         ListView listView = (ListView) getView().findViewById(R.id.Courses);
@@ -61,9 +86,13 @@ public class FragmentHome extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Toast.makeText(getActivity().getApplicationContext(), "Course selected", LENGTH_SHORT).show();
+                TextView textview = (TextView) view.findViewById(R.id.courseName);
+                MainActivity.selectedcoursecode = textview.getText().toString().split(":")[0];
+                Log.d(TAG,MainActivity.selectedcoursecode);
 
-                // Send the URL to the host activity
-                //    mListener.onURLSelected(((TextView) view).getText().toString());
+                FragmentTransaction xfragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                xfragmentTransaction.replace(R.id.containerView, new FragmentTabs()).commit();
+
 
             }
         });

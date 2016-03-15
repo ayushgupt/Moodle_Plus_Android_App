@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -33,15 +34,22 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import static android.widget.Toast.*;
 import static com.android.volley.VolleyLog.TAG;
 
 public class MainActivity extends AppCompatActivity {
 
-    DrawerLayout mDrawerLayout;
-    NavigationView mNavigationView;
-    FragmentManager mFragmentManager;
-    FragmentTransaction mFragmentTransaction;
+    public DrawerLayout mDrawerLayout;
+    public NavigationView mNavigationView;
+    public FragmentManager mFragmentManager;
+    public FragmentTransaction mFragmentTransaction;
+
+    public static String selectedcoursecode;
+    public static int selectedassignment;
+    public static int selectedthread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        selectedcoursecode="cop290";
 
         // Setup UI of MainActivity
         setup();
@@ -74,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
          */
 
         mFragmentManager = getSupportFragmentManager();
-        mFragmentTransaction = mFragmentManager.beginTransaction();
-        mFragmentTransaction.replace(R.id.containerView, new FragmentThreads()).commit();
+        //mFragmentTransaction = mFragmentManager.beginTransaction();
+        //mFragmentTransaction.replace(R.id.containerView, new FragmentThreads()).commit();
 
         /**
          * Setup click events on the Navigation View Items.
@@ -87,35 +95,34 @@ public class MainActivity extends AppCompatActivity {
                 mDrawerLayout.closeDrawers();
 
 
-
                 if (menuItem.getItemId() == R.id.nav_item_notif) {
                     FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.containerView,new FragmentNotifications()).commit();
+                    fragmentTransaction.replace(R.id.containerView, new FragmentNotifications()).commit();
 
                 }
 
                 if (menuItem.getItemId() == R.id.nav_item_home) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
-                    xfragmentTransaction.replace(R.id.containerView,new FragmentHome()).commit();
+                    xfragmentTransaction.replace(R.id.containerView, new FragmentHome()).commit();
                 }
                 if (menuItem.getItemId() == R.id.nav_item_gardes) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
-                    xfragmentTransaction.replace(R.id.containerView,new FragmentLeftGrade()).commit();
+                    xfragmentTransaction.replace(R.id.containerView, new FragmentLeftGrade()).commit();
                 }
                 if (menuItem.getItemId() == R.id.nav_item_courses) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
-                    xfragmentTransaction.replace(R.id.containerView,new FragmentTabs()).commit();
+                    xfragmentTransaction.replace(R.id.containerView, new FragmentHome()).commit();
                 }
                 if (menuItem.getItemId() == R.id.nav_item_logout) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
-                    FragmentLogout fragment = new FragmentLogout() ;
+                    FragmentLogout fragment = new FragmentLogout();
                     xfragmentTransaction.attach(fragment); //.commit();
 
                     xfragmentTransaction.replace(R.id.containerView, fragment).commit();
                 }
                 if (menuItem.getItemId() == R.id.nav_item_profile) {
                     FragmentTransaction xfragmentTransaction = mFragmentManager.beginTransaction();
-                    xfragmentTransaction.replace(R.id.containerView,new FragmentProfile()).commit();
+                    xfragmentTransaction.replace(R.id.containerView, new FragmentProfile()).commit();
                 }
                 return false;
             }
@@ -140,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
         //checks if the Session Manager is logged in
         if (SessionManager.isLoggedIn()) {
             //making the url by concatinating ip and adding course list API url given in pdf
-            String course_url = "http://"+LoginActivity.ip+"/courses/list.json";
+            String course_url = ("http://"+LoginActivity.ip+"/courses/list.json").trim();
 
             //makes a dialog box which shows that courses are being loaded
             //final ProgressDialog pDialog = new ProgressDialog(this);
@@ -171,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             } else {
                 //this is entered when the user has just logged in...
-                RequestQueue requestQueue = Volley.newRequestQueue(this, SessionManager.httpStack);
+                RequestQueue courseRequestQueue = Volley.newRequestQueue(this, SessionManager.httpStack);
                 //requestqueue is made using http-stack as we need to check the sessions of the logged in user
                 JsonObjectRequest courseRequest = new JsonObjectRequest
                         (Request.Method.GET, course_url, null, new Response.Listener<JSONObject>() {
@@ -215,7 +222,7 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                 //Course Request is now added to the Request Queue...
-                requestQueue.add(courseRequest);
+                courseRequestQueue.add(courseRequest);
             }
 
         }
@@ -225,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
         //checks if the Session Manager is logged in
         if (SessionManager.isLoggedIn()) {
             //making the url by concatinating ip and adding grades list API url given in pdf
-            String grades_url = "http://"+LoginActivity.ip+"/default/grades.json";
+            String grades_url = ("http://"+LoginActivity.ip+"/default/grades.json").trim();
 
             //makes a dialog box which shows that grades are being loaded
             //final ProgressDialog pDialog = new ProgressDialog(this);
@@ -238,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
             //for the first time get grades data will return null as till now set grades data has not been called
             if (SessionManager.getGrades() == null) {
                 //this is entered when the user has just logged in...
-                RequestQueue requestQueue = Volley.newRequestQueue(this, SessionManager.httpStack);
+                RequestQueue gradesRequestQueue = Volley.newRequestQueue(this, SessionManager.httpStack);
                 //requestqueue is made using http-stack as we need to check the sessions of the logged in user
                 JsonObjectRequest gradesRequest = new JsonObjectRequest
                         (Request.Method.GET, grades_url, null, new Response.Listener<JSONObject>() {
@@ -253,6 +260,13 @@ public class MainActivity extends AppCompatActivity {
                                 //pDialog.hide();
                                 //Also the Grades data is put in a hash map of the Session Manager Preferences so that we dont need to call this API again...
                                 SessionManager.setGrades(gradesobject[0]);
+                                /*
+                                try {
+                                    callAssignments();
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                */
                             }
                         }, new Response.ErrorListener() {
 
@@ -268,11 +282,169 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                 //Grades Request is now added to the Request Queue...
-                requestQueue.add(gradesRequest);
+                gradesRequestQueue.add(gradesRequest);
+            }
+            /*
+            else {
+                if(SessionManager.assignments==null){
+                    try {
+                        callAssignments();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            */
+        }
+    }
+
+    public void callAssignments() throws JSONException {
+        //checks if the Session Manager is logged in
+        if (SessionManager.isLoggedIn()) {
+            Log.d(TAG,"Fetching assignment data");
+
+            JSONObject courseobject = SessionManager.getCourseData();
+            JSONArray courses = null;
+            String assignment_url =null;
+            try {
+                courses = (JSONArray) courseobject.get("courses");
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            for(int i=0;i<courses.length();i++) {
+                JSONObject course = courses.getJSONObject(i);
+                final String coursecode = (String) course.get("code");
+                assignment_url = ("http://"+LoginActivity.ip + "/courses/course.json/" +coursecode+"/assignments").trim();
+                Log.d(TAG, assignment_url);
+
+                //this is entered when the user has just logged in...
+                RequestQueue assignmentsRequestQueue = Volley.newRequestQueue(this, SessionManager.httpStack);
+                //requestqueue is made using http-stack as we need to check the sessions of the logged in user
+                JsonObjectRequest assignmentsRequest = new JsonObjectRequest
+                        (Request.Method.GET, assignment_url, null, new Response.Listener<JSONObject>() {
+
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Log.d(TAG, response.toString());
+                                final JSONObject course_specific_data = response;
+                                try {
+                                    JSONArray assignmentarray = (JSONArray) course_specific_data.get("assignments");
+                                    int numassignments = assignmentarray.length();
+                                    for(int j=0;j<numassignments;j++){
+                                        final int assignment_id = assignmentarray.getJSONObject(j).getInt("id");
+                                        String individual_assignment_url = (LoginActivity.ip+"/courses/assignment.json/"+Integer.toString(assignment_id)).trim();
+                                        final JSONArray detailed_assignment_array = new JSONArray();
+                                        RequestQueue individualRequestQueue = Volley.newRequestQueue(getApplicationContext(), SessionManager.httpStack);
+                                        //requestqueue is made using http-stack as we need to check the sessions of the logged in user
+                                        JsonObjectRequest individualRequest = new JsonObjectRequest
+                                                (Request.Method.GET, individual_assignment_url, null, new Response.Listener<JSONObject>() {
+
+                                                    @Override
+                                                    public void onResponse(JSONObject response) {
+                                                        Log.d(TAG, response.toString());
+                                                        detailed_assignment_array.put(response);
+                                                        try {
+                                                            course_specific_data.put("assignments",detailed_assignment_array);
+                                                            SessionManager.assignments.put(coursecode,course_specific_data);
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                }, new Response.ErrorListener() {
+
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error)
+                                                    {
+                                                        VolleyLog.d(TAG, "Error: " + error.getMessage());
+                                                        //pDialog.setMessage(error.getMessage());
+                                                        Toast.makeText(getApplicationContext(), "Failed to fetch assignment id "+assignment_id+" data", LENGTH_LONG).show();
+                                                        //pDialog.setMessage(error.getCause().toString());
+                                                        //pDialog.hide();
+                                                    }
+                                                });
+
+                                        //Grades Request is now added to the Request Queue...
+                                        individualRequestQueue.add(individualRequest);
+
+                                    }
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+
+                            @Override
+                            public void onErrorResponse(VolleyError error)
+                            {
+                                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                                //pDialog.setMessage(error.getMessage());
+                                Toast.makeText(getApplicationContext(), "Failed to fetch course "+coursecode+" assignments data", LENGTH_LONG).show();
+                                //pDialog.setMessage(error.getCause().toString());
+                                //pDialog.hide();
+                            }
+                        });
+
+                //Grades Request is now added to the Request Queue...
+                assignmentsRequestQueue.add(assignmentsRequest);
             }
 
         }
     }
 
 
+    public void addThread(View view){
+        EditText titletext = (EditText) findViewById(R.id.threadtitle);
+        String title = titletext.getText().toString();
+
+        EditText descriptiontext = (EditText) findViewById(R.id.content);
+        String description = descriptiontext.getText().toString();
+
+        String titlequery = ""; String descriptionquery = "";
+        try {
+            titlequery = URLEncoder.encode(title, "utf-8");
+            descriptionquery = URLEncoder.encode(description,"utf-8");
+            Log.d(TAG,title);
+            Log.d(TAG,description);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String coursecode = MainActivity.selectedcoursecode;
+
+        String thread_add_url = ("http://"+LoginActivity.ip +"/threads/new.json?title="+titlequery+"&description="+descriptionquery+"&course_code="+coursecode).trim();
+        Log.d(TAG, thread_add_url);
+
+        //this is entered when the user has just logged in...
+        RequestQueue addThreadsRequestQueue = Volley.newRequestQueue(getApplicationContext(), SessionManager.httpStack);
+        //requestqueue is made using http-stack as we need to check the sessions of the logged in user
+        JsonObjectRequest addThreadsRequest = new JsonObjectRequest
+                (Request.Method.GET, thread_add_url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, response.toString());
+                        Toast.makeText(getApplicationContext(), "Added thread", LENGTH_LONG).show();
+                        // go to tabs fragment
+                        FragmentTransaction fragmentTransaction = mFragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.containerView, new FragmentThreads()).commit();
+
+
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        VolleyLog.d(TAG, "Error: " + error.getMessage());
+                        //pDialog.setMessage(error.getMessage());
+                        Toast.makeText(getApplicationContext(), "Failed to add thread", LENGTH_LONG).show();
+                        //pDialog.setMessage(error.getCause().toString());
+                        //pDialog.hide();
+                    }
+                });
+        addThreadsRequestQueue.add(addThreadsRequest);
+
+
+    }
 }
