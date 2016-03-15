@@ -1,0 +1,185 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    >
+
+
+
+    <TextView
+        android:id="@+id/no_use"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dip"
+        android:textSize="28dip"
+        android:visibility="gone"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:text="Name of Assignment"
+        android:gravity="center"
+        android:layout_toRightOf="@id/no_use"
+        android:layout_alignParentTop="true"
+        android:textSize="20sp"
+
+        android:id="@+id/indi_ass_name"
+        />
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/imp_info"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/no_use"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="Description"
+        android:textSize="12sp"
+
+
+        android:stretchColumns="1">
+
+        <TableRow android:layout_width="match_parent"
+            android:background="#e6e6e6"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="Created At"
+                android:padding="10dp" />
+            <TextView
+                android:id="@+id/created_at"
+                android:text="Not Available"
+                android:gravity="right"
+                android:padding="10dp"
+                android:paddingRight="20dp"
+                />
+        </TableRow>
+        <TableRow android:layout_width="match_parent"
+
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="Deadline"
+                android:padding="10dp" />
+            <TextView
+                android:id="@+id/deadline"
+                android:text="Not Available"
+                android:gravity="right"
+                android:padding="10dp"
+                android:paddingRight="20dp"
+                />
+        </TableRow>
+        <TableRow android:layout_width="match_parent"
+            android:background="#e6e6e6"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="Time Remaining"
+                android:padding="10dp" />
+            <TextView
+                android:id="@+id/time_remaining"
+                android:text="Not Available"
+                android:gravity="right"
+                android:padding="10dp"
+                android:paddingRight="20dp"
+                />
+        </TableRow>
+        <TableRow android:layout_width="match_parent"
+            android:background="#e6e6e6"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="Late days allowed"
+                android:padding="10dp" />
+            <TextView
+                android:id="@+id/late_days"
+                android:text="Not Available"
+                android:gravity="right"
+                android:padding="10dp"
+                android:paddingRight="20dp"
+                />
+        </TableRow>
+        <TableRow android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="Previous Submission"
+                android:padding="10dp" />
+            <TextView
+                android:text="Not Available"
+                android:gravity="right"
+                android:padding="10dp"
+                android:paddingRight="20dp"
+                />
+        </TableRow>
+        <TableRow android:layout_width="match_parent"
+            android:background="#e6e6e6"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="Submission"
+                android:padding="10dp" />
+            <Button
+                android:width="10dip"
+                android:text="Upload"
+                android:gravity="center"
+                android:padding="10dp"
+                android:paddingRight="20dp"
+                />
+            <EditText
+                android:visibility="gone"
+                />
+
+        </TableRow>
+        <TableRow android:layout_width="match_parent"
+            android:background="#e6e6e6"
+            android:layout_height="wrap_content">
+            <Button
+                android:width="10dip"
+                android:text="Submit"
+                android:gravity="center"
+               android:height="20dp"
+                android:padding="10dp"
+                android:layout_span="2" />
+
+
+        </TableRow>
+    </TableLayout>
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:id="@+id/info"
+        android:paddingTop="20dp"
+        >
+
+    <TextView
+        android:id="@+id/ass_info"
+        android:layout_width="fill_parent"
+        android:layout_height="250dip"
+        android:layout_above="@id/imp_info"
+        android:layout_alignParentRight="true"
+
+
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@id/no_use"
+        android:gravity="center_vertical"
+        android:text="Example "
+        android:textSize="16sp"
+        android:padding="10dp"
+
+        />
+    </ScrollView>
+
+</RelativeLayout>
+
+
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="10dp"
+        android:textSize="16sp" />
+            -->

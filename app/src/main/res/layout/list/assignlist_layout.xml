@@ -1,0 +1,73 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rel_layout"
+    android:layout_width="fill_parent"
+    android:layout_height="100dip"
+    android:padding="6dip"
+    >
+
+    <TextView
+        android:id="@+id/ass_no"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dip"
+        android:paddingTop="20dip"
+        android:textSize="28dip"
+        />
+
+
+    <TextView
+        android:id="@+id/ass_id"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dip"
+        android:textSize="28dip"
+        android:text="1"
+        android:visibility="gone"
+        />
+
+
+    <TextView
+        android:id="@+id/deadline"
+        android:layout_width="fill_parent"
+        android:layout_height="26dip"
+
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/ass_no"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="Description"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/ass_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/deadline"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@id/ass_no"
+        android:gravity="center_vertical"
+        android:text="Project 1 and Its very hard,please ask someone elseto doit"
+        android:textSize="16sp" />
+
+
+
+</RelativeLayout>
+
+
+
+    <!--
+    <?xml version="1.0" encoding="utf-8"?>
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="10dp"
+        android:textSize="16sp" />
+            -->
