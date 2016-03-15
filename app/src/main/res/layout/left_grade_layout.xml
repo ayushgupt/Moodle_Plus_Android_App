@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="30sp"
+        android:id="@+id/leftgrade_faculty"
+        android:layout_centerHorizontal="true"
+        android:text="Grades"
+        android:textColor="#000"
+        android:gravity="center"
+        />
+
+
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:background="#999966"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:paddingTop="2dip"
+        android:paddingLeft="2dip"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="   Code  "
+            android:id="@+id/left_grade_coursename"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_gravity="center"
+            android:layout_columnSpan="1"
+            android:layout_rowSpan="1" />
+
+        <TextView
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Assignment's Name"
+            android:id="@+id/left_grade_name"
+            android:layout_row="0"
+            android:paddingLeft="12dp"
+            android:layout_column="1"
+            android:layout_rowSpan="1"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Scores"
+            android:id="@+id/left_grade_score"
+            android:layout_rowSpan="1"
+            android:layout_column="2"
+            android:layout_gravity="center" />
+
+
+    </GridLayout>
+
+    <ListView android:id="@+id/left_grades" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+
+        />
+
+
+</LinearLayout>

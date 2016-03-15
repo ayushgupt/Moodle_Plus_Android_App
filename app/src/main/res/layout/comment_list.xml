@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+    android:padding="6dip"
+    android:background="#e6e6e6"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+        android:id="@+id/comment_no_use"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="10dip"
+        android:textSize="8dip"
+
+        android:gravity="center"
+        />
+
+    <TextView
+        android:id="@+id/comment_time"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/comment_no_use"
+        android:ellipsize="marquee"
+        android:singleLine="true"
+        android:text="6 hrs ago"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/comment_details"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/comment_time"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_toRightOf="@id/comment_no_use"
+        android:gravity="center_vertical"
+        android:text="Jasmeet Singh: I am awesome"
+        android:textSize="16sp" />
+
+</RelativeLayout>

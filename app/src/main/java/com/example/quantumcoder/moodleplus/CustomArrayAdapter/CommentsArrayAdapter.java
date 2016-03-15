@@ -11,14 +11,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class assignListArrayAdapter extends ArrayAdapter<String> {
+public class CommentsArrayAdapter extends ArrayAdapter<String> {
     private final Context context;
     private final String[] values;
-    private final String[] deadlines ;
+    private final String[] time ;
 
-    public assignListArrayAdapter(Context context, String[] values, String[] dead) {
+    public CommentsArrayAdapter(Context context, String[] values, String[] dead) {
         super(context, -1, values);
-        this.deadlines=dead ;
+        this.time=dead ;
         this.context = context;
         this.values = values;
     }
@@ -27,14 +27,14 @@ public class assignListArrayAdapter extends ArrayAdapter<String> {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.assignlist_layout, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.ass_name);
-        TextView textView2 = (TextView) rowView.findViewById(R.id.deadline);
-        TextView number_View = (TextView) rowView.findViewById(R.id.ass_no);
-        textView.setText(values[position]);
-        textView2.setText(deadlines[position]);
+        View rowView = inflater.inflate(R.layout.comment_list, parent, false);
+        TextView textView = (TextView) rowView.findViewById(R.id.comment_time);
+        TextView textView2 = (TextView) rowView.findViewById(R.id.comment_details);
+       // TextView number_View = (TextView) rowView.findViewById(R.id.ass_no);
+        textView.setText(time[position]);
+        textView2.setText(values[position]);
         // change the icon for Windows and iPhone
-        number_View.setText(Integer.toString(position+1)+")");
+        //number_View.setText(Integer.toString(position+1)+")");
         return rowView;
     }
 }

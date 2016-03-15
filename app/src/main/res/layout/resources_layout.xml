@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textSize="30sp"
+        android:id="@+id/textView1"
+        android:layout_margin="3dp"
+        android:textColor="@android:color/holo_blue_dark"
+        android:text="Faculty: Vinay Riberio"
+        android:visibility="gone"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:textStyle="italic"
+        android:textSize="25sp"
+        android:gravity="center"
+        android:autoLink="web"
+
+        android:layout_margin="3dp"
+        android:textColor="#000"
+        android:text="Upload a new File"
+        android:id="@+id/Faculty"/>
+
+    <EditText
+        android:width="500px"
+        android:height="100px"
+        android:layout_below="@+id/Faculty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_margin="3dp"
+        android:hint="Title"
+        android:id="@+id/title"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/title"
+        android:text="Browse"
+        android:layout_below="@+id/Faculty"
+        android:id="@+id/button2"
+        android:layout_margin="3dp"
+        />
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:text="Submit"
+        android:gravity="center"
+        android:id="@+id/button"
+        android:layout_marginTop="10dp"
+        android:layout_margin="3dp"
+        android:background="#009933"
+        android:padding="10dp"
+        />
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_below="@+id/button"
+        android:layout_marginTop="15dp"
+        >
+
+
+
+        <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            >
+
+            <TableRow
+                android:background="#607D8B"
+
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="SNo "
+                    android:width="20dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Title"
+                    android:width="70dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Actions"
+                    android:width="50dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Uploaded on"
+                    android:width="40dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Private" />
+
+            </TableRow>
+
+            <ListView android:id="@+id/download" android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                />
+            <!-- <TableRow
+                 android:background="#ECEFF1"
+                 android:padding="5dp"
+                 >
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:text="4.3" />
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:width="170dp"
+                     android:text="Android Jelly Bean not your lover she is the girl who claims i am the one " />
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_weight="1"
+                     android:text="18" />
+             </TableRow>
+             -->
+        </TableLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

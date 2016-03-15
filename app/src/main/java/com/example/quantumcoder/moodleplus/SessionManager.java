@@ -48,6 +48,12 @@ public class SessionManager {
     public static final String KEY_COURSEDATA = "coursedata";
     public static final String KEY_GRADES = "grades";
 
+    public static HashMap<String,JSONObject> assignments ;
+    public static HashMap<Integer,JSONObject> assignment_data ; // not needed
+    public static HashMap<String,JSONObject> threads ;
+    public static HashMap<String,JSONObject> grades ;
+    public static JSONObject notifications;
+
 
 
     // Constructor
@@ -55,6 +61,11 @@ public class SessionManager {
         this._context = context;
         pref = _context.getSharedPreferences(PREF_NAME, PRIVATE_MODE);
         editor = pref.edit();
+        assignments = new HashMap<String,JSONObject>();
+        assignment_data = new HashMap<Integer,JSONObject>();
+        threads = new HashMap<String,JSONObject>();
+        grades = new HashMap<String,JSONObject>();
+        notifications = null;
 
         DefaultHttpClient httpclient = new DefaultHttpClient();
 
@@ -122,7 +133,13 @@ public class SessionManager {
         // Clearing all data from Shared Preferences
         editor.clear();
         editor.commit();
+        assignments = null;
+        assignment_data = null;
+        threads = null;
+        grades = null;
+        notifications = null;
 
+        /*
         // After logout redirect user to Loing Activity
         Intent i = new Intent(_context, LoginActivity.class);
         // Closing all the Activities
@@ -133,6 +150,8 @@ public class SessionManager {
 
         // Staring Login Activity
         _context.startActivity(i);
+        */
+
     }
 
     /**
