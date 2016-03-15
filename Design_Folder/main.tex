@@ -1,0 +1,164 @@
+\documentclass[a4paper,man,natbib]{apa6}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorinlistoftodos]{todonotes}
+\usepackage[export]{adjustbox}
+
+\title{}
+\shorttitle{MoodlePlus}
+\author{}
+\affiliation{}
+
+
+
+\begin{document}
+
+
+\section{MoodlePlus App}
+
+This App is Designed as a part of an Assignment of COP290-Design Practices Course.We were provided with a web2py server which we deployed locally.We built an app which will interact with this server via API calls. The entire app design is built by us.It is built in a team of three by Aniket Bajpai(2014CS10209),Manish Singh (2014EE1043) and Ayush Gupta(2014CS50281). 
+
+\section{The UserInterface}
+\subsection{The Splash Screen}
+Our App Opens with this splash screen which is mainly blue in colour due to our moodle theme.It fades out towards left and the login activity appears from right. This splash screen is visible for only around 0.5 seconds.
+\includegraphics[width=0.5\textwidth, center]{iit.png}
+
+\section{Java Files}
+\label{sec:examples}
+
+\subsection{LoginActivity.java}
+
+It extends AppCompatActivity class.The ip to run for the url is defined as a static variable here to be used by all the other java files too. It has methods like isNetworkConnected() and CheckValidation() for the initial login of the user. The attemptLogin() Method gets the text entered by the user in the username and password fields, concatenates it to the url for sending the loginRequest.The loginRequest is finally sent by adding it to the RequestQueue, the queue also takes HttpStack as an argument in addition to the usual application context due to the fact that we need to manage each user data separately and one user’s informaton should be visible only to himself through his username and password.
+\subsection{Validation.java}
+
+It contains the Username Regex and and Checks that username field isn’t empty and contains the Error Message to be displayed in case the validation fails.
+
+\subsection{SessionManager.java}
+
+This is the cookie manager class of our app.We have declared almost all the variables static so that its member variables are accessible by all the other classes without making an object of SessionManager Class.It Contains the Sharedpreferences object whose contents are changed by editor object.It also contains the main HttpStack object which is used to send the API calls everywhere in the app to get the data of a specific logged in user.Most of the other methods of this class are basically used to store and fetch the data that is fetched. The fetched data which is in Json form is converted to string and put in the hash-map of this class.The Keys to fetch the String is named accordingly and are self explanatory as to which Json object they refer to.
+
+
+
+\subsection{MainActivity.java}
+\begin{enumerate}
+\item OnCreate():-This function just defines the layout and the top toolbar.It calls the two very essential methods Setup() and callCourse().
+\item Setup():-This Method Sets up the User Interface of the whole app.It sets up the DrawerLayout and NavigationView.It also uses the fragment manager object to define Transactions, which are called in the Onclicklistners of the menuitems of the drawer.
+\item callCourse():-This Method calls the Courses API to get the required JSON Response which is then parsed to Display Buttons on the Home Fragment whose transaction also takes place in this class.It also calls the callGrades() Method.
+\item callGrades():-This Method calls the Grades API and stores the Received Json Response as String in Hashmaps of the SessionManager Class,this string will be called when we open the overall grades fragment by selecting the corresponding menuitem from the Slider Drawer.
+\end{enumerate}
+
+
+
+
+\section{Adapter Files}
+\label{sec:examples}
+
+\subsection{AssignListArrayAdapter}
+This Java File basically takes the Array of the Deadlines and other Strings and assigns it to the xml files to be displayed in the Assignment Fragment.
+\subsection{CoursesArrayAdapter}
+This class takes arrays of data as input and assigns it to the rows to be displayed in the “layout.courselist\_layout”.
+\subsection{DownloadAraryAdapter}
+This class  takes the Context, Values Array,Deadline Array,Privacy Array and uses the download\_list layout to display the information on the required fragment.
+\subsection{GradeArrayAdapter}
+This Class context and arrays of deadline, weight , marks and other values and uses grade\_list layout to display the grades information on the grades fragment.
+\subsection{Other Adapter Files}
+Other Adapter Files like LeftGradeArrayAdapter.java,NotifArrayAdapter.java  and ThreadArrayAdapter.java do Similar things on other xml files to render the final layout of other Framents.
+
+\section{XML Files}
+\label{sec:examples}
+
+\subsection{drawermenu.xml}
+This defines the Items in the Slider Drawer. It has items like Home,Notifications,Grades,Courses,Profile and Logout.The course is itself a menu whose menu items are the various courses. Also it also assigns an icon to each Item which is basically an image we have placed in the drawable folder. 
+\subsection{indi\_assignment\_layout.xml}
+This defines the layout of the Individual Assignment Activity.It contains fields like Name, Date created,DeadLine, Time Remaining and Submission Option.
+\subsection{indi\_threads.xml}
+This defines the layout of a Thread.
+\subsection{activity\_main.xml}
+It defines layout of the Activity which opens just after User logs in.This contains many other fragments which display the User Data.
+\subsection{Other XML Files}
+There are many other XML files which define the layout of many fragments in the Main Activity.All the corresponding java files are tabulated and listed in the table below. 
+
+
+
+
+\begin{wraptable}
+\centering
+\begin{tabular}{ |s|p{6cm}|  }
+\hline
+\hline
+XML File & Corresponding Java File \\
+\hline
+assignlist\_layout.xml & AssignListArrayAdapter.java \\
+courselist\_layout.xml  & CoursesArrayAdapter.java \\
+download\_list.xml & DownloadArrayAdapter.java \\
+assignment\_layout.xml    & FragmentAssignment.java \\
+grades\_layout.xml & FragmentGrades.java \\
+home\_layout.xml & FragmentHome.java \\
+left\_grade\_layout.xml & FragmentLeftGrade.java \\
+logout\_layout.xml & FragmentLogout.java \\
+notif\_layout.xml & FragmentNotifications.java \\
+overview\_layout.xml & FragmentOverview.java \\
+profile\_layout.xml & FragmentProfile.java \\
+resources\_layout.xml & FragmentResources.java \\
+tab\_layout.xml & FragmentTabs.java \\
+tab\_layout.xml & FragmentThreads.java \\
+grade\_list.xml & GradeArrayAdapter.java \\
+activity\_greeting.xml & GreetingScreen.java \\
+left\_gradelist.xml	& LeftGradeArrayAdapter.java\\
+activity\_login.xml & LoginActivity.java \\
+activity\_main.xml & MainActivity.java \\
+notification\_list.xml & NotifArrayAdapter.java \\
+overview\_list.xml & OverviewArrayAdapter.java \\
+indi\_assignment\_layout.xml & IndividualAssignmentActivity.java\\
+thread\_list.xml & ThreadArrayAdapter.java
+\hline
+\end{tabular}
+\caption{Table inside a floating element}
+\label{table:ta}
+\end{wraptable}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{BitBucket Repository}
+\label{sec:examples}
+\begin{center}
+The code for the project is being maintained in this repository:
+ {\em https://bitbucket.org/AniketBajpai/moodleplus}
+\end{center}
+
+\section{References}
+\label{sec:examples}
+\begin{enumerate}
+\item For the Latex Template:
+https://www.overleaf.com/latex/templates/your-apa6-style-manuscript/kngbbqpypjcq\#.Vs0f6px97IU
+\item http://www.mysamplecode.com/2012/08/android-fragment-example.html
+\item http://www.vogella.com/tutorials/AndroidListView/article.html
+\item http://developer.android.com/training/implementing-navigation/temporal.html
+
+\end{enumerate}
+
+
+
+\end{document}
+
+%
+% Please see the package documentation for more information
+% on the APA6 document class:
+%
+% http://www.ctan.org/pkg/apa6
+%
